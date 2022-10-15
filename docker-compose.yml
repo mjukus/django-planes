@@ -1,0 +1,22 @@
+version: "3"
+
+services:
+  db:
+    image: postgres
+    volumes:
+      - ../djanko_postgres_volume:/var/lib/postgresql/data
+    env_file:
+      - .env
+  web:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    command: bash ./djanko/startup.sh
+    volumes:
+      - .:/code
+    ports:
+      - "8888:8000"
+    env_file:
+      - .env
+    depends_on:
+      - db
